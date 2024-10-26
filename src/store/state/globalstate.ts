@@ -1,12 +1,16 @@
-import { globalStateTypes } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState: globalStateTypes = {
+export interface initialStateTypes {
+  isSidebarOpen: boolean;
+  isdarkMode: boolean;
+}
+
+const initialState: initialStateTypes = {
   isSidebarOpen: false,
   isdarkMode: false,
 };
 
-export const applicationState = createSlice({
+export const globalstate = createSlice({
   name: "app-state",
   initialState,
   reducers: {
@@ -19,4 +23,4 @@ export const applicationState = createSlice({
   },
 });
 
-export const { setisSidebarOpen, setisdarkMode } = applicationState.actions;
+export const { setisSidebarOpen, setisdarkMode } = globalstate.actions;

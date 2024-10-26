@@ -1,17 +1,24 @@
-import Appsidebar from "@/components/shared/sidebar/appsidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+"use client";
+import Navbar from "@/components/shared/navbar";
+import AppSidebar from "@/components/shared/sidebar/appsidebar";
+import { useAppSelector } from "@/store/store";
+import React from "react";
 
-const DsahboardLayout = ({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) => {
+const layout = ({ children }: { children: React.ReactNode }) => {
+  const { isSidebarOpen } = useAppSelector((state) => state.global);
   return (
-    <SidebarProvider>
-      <Appsidebar />
-      <main>{children}</main>
-    </SidebarProvider>
+    <div className="flex min-h-screen w-full bg-secondary-300 text-primary-600">
+      <AppSidebar />
+      <main
+        className={`flex w-full flex-col bg-secondary-300 dark:bg-dark-primary ${
+          !isSidebarOpen ? "md:pl-72" : ""
+        }`}
+      >
+        <Navbar />
+        {children}
+      </main>
+    </div>
   );
 };
 
-export default DsahboardLayout;
+export default layout;

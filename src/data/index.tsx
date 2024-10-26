@@ -12,18 +12,23 @@ import {
   Forward,
   Frame,
   GalleryVerticalEnd,
+  Home,
+  Hourglass,
   LogOut,
   Map,
   MoreHorizontal,
   PieChart,
   Plus,
+  Search,
   Settings2,
   Sparkles,
   SquareTerminal,
   Trash2,
+  UserRound,
+  UsersRound,
 } from "lucide-react"
 
-import { CarouselimageDataType, SidebarLinksData } from "@/types";
+import { CarouselimageDataType, sideBarLinkDataTypes } from "@/types";
 
 export const carouselIamgeData: Array<CarouselimageDataType> = [
   {
@@ -55,131 +60,30 @@ export const carouselIamgeData: Array<CarouselimageDataType> = [
       "Revolutionise your project management. Smart features and intuitive design help you manage projects more effectively and deliver results in record time.",
   },
 ];
-export const SidebarLinksdata: SidebarLinksData = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+export const sideBarLinksData: Array<sideBarLinkDataTypes> = [
+  {
+    href: "/home",
+    icon: Home,
+    label: "Home",
   },
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
-  navMain: [
-    {
-      title: "Playground",
-      url: "#",
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
-};
+  {
+    href: "/timeline",
+    icon: Hourglass,
+    label: "Timeline",
+  },
+  {
+    href: "/search",
+    icon: Search,
+    label: "Search",
+  },
+  {
+    href: "/users",
+    icon: UserRound,
+    label: "User",
+  },
+  {
+    href: "/teams",
+    icon: UsersRound,
+    label: "Teams",
+  },
+];

@@ -9,11 +9,11 @@ import {
 } from "react-redux";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { ApiService } from "./middleware";
-import { applicationState } from "./state/globalstate";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { PersistGate } from "redux-persist/integration/react";
 import { userauthState } from "./state/authstate";
+import { globalstate } from "./state/globalstate";
 
 
 const persistConfig = {
@@ -23,7 +23,7 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  global: applicationState.reducer,
+  global: globalstate.reducer,
   auth: userauthState.reducer,
   [ApiService.reducerPath]: ApiService.reducer,
 });
