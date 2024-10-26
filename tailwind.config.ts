@@ -20,6 +20,14 @@ module.exports = {
         light: "var(--color-light)",
         paleblue: "var(--color-paleblue)",
       },
+      boxShadow: {
+        basic: "0 1px 3px rgba(0, 0, 0, 0.1)",
+        medium: "0 2px 6px rgba(0, 0, 0, 0.2)",
+        large: "0 4px 12px rgba(0, 0, 0, 0.25)",
+        inset: "inset 0 2px 4px rgba(0, 0, 0, 0.3)",
+        custom:
+          "0 4px 30px rgba(242, 248, 255, 0.5), 0 1px 3px rgba(255, 255, 255, 0.3)",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

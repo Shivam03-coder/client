@@ -1,21 +1,29 @@
-import React from "react";
+import Employeecards from "@/components/dashboard/manager-dashboard/employeecards";
+import EmployeePieChart from "@/components/dashboard/manager-dashboard/employeepercentage";
+import EmployeeTable from "@/components/dashboard/manager-dashboard/employeetable";
+import Employeetable from "@/components/dashboard/manager-dashboard/employeetable";
+import GenderSharePiechart from "@/components/dashboard/manager-dashboard/gendersharepiechart";
+import MonthlyBusinessGrowthChart from "@/components/dashboard/manager-dashboard/monthlygrowthlinechart";
 
 const Admindashboard = () => {
   return (
-    <div className="min-w-full p-10">
+    <div className="min-w-full p-2">
       {/* GOALS CARDS */}
-      <div className="grid w-full grid-cols-4 gap-5">
-        <div className="bg-secondary rounded-xl shadow-xl p-3 min-h-[12.5rem] min-w-[12.5rem]">
-          STAFF SCHEDULE
+      <div className="grid w-full grid-cols-6 gap-8">
+        <div className="col-span-2">
+          <EmployeePieChart />
         </div>
-        <div className="bg-secondary rounded-xl shadow-xl p-3 min-h-[12.5rem] min-w-[12.5rem]">
-          STAFF SCHEDULE
+        <div className="col-span-4">
+          <Employeecards />
         </div>
-        <div className="bg-secondary rounded-xl shadow-xl p-3 min-h-[12.5rem] min-w-[12.5rem]">
-          STAFF SCHEDULE
+        <div className="col-span-4 flex items-center">
+          <MonthlyBusinessGrowthChart />
         </div>
-        <div className="bg-secondary rounded-xl shadow-xl p-3 min-h-[12.5rem] min-w-[12.5rem]">
-          STAFF SCHEDULE
+        <div className="col-span-2">
+          <GenderSharePiechart />
+        </div>
+        <div className="col-span-full">
+          <EmployeeTable />
         </div>
       </div>
     </div>
