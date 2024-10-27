@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useFormik } from "formik";
 import validate from "./validate";
 import React from "react";
-import { useSigninUserMutation } from "@/store/api/auth";
+import { useSigninUserMutation } from "@/store/api";
 import { useToast } from "@/hooks/use-toast";
 import { useAppDispatch } from "@/store/store";
 import { useRouter } from "next/navigation";
@@ -32,7 +32,7 @@ const SignInForm: React.FC = () => {
             title: response?.message,
           });
           action.resetForm();
-          Router.push("/dashboard");
+          Router.push("/admin-dashboard");
         } else if (response?.status === "failed") {
           toast({
             title: response?.message,
@@ -51,7 +51,7 @@ const SignInForm: React.FC = () => {
   return (
     <form
       onSubmit={formik.handleSubmit}
-      className="space-y-4 w-[50%] mx-auto shadow-2xl p-4"
+      className="space-y-4 w-[40%] mx-auto shadow-2xl p-4"
     >
       <div>
         <label htmlFor="email" className="block text-sm font-medium">
@@ -91,7 +91,7 @@ const SignInForm: React.FC = () => {
         ) : null}
       </div>
 
-      <Button type="submit" className="w-full mt-4">
+      <Button type="submit" className="w-full text-secondary mt-4">
         Sign In
       </Button>
     </form>

@@ -6,7 +6,7 @@ export function middleware(request: NextRequest) {
   const refreshToken = request.cookies.get("refreshToken")?.value;
 
   // Define paths that should not be accessible for logged-in users
-  const restrictedPathsForLoggedIn = ["/", "/signup", "/signin"]; // Include root path
+  const restrictedPathsForLoggedIn = ["/signup", "/signin"]; // Include root path
   const redirectToDashboard = "/dashboard";
   const redirectToSignin = "/signin";
 
@@ -14,12 +14,18 @@ export function middleware(request: NextRequest) {
   const isAuthenticated = Boolean(refreshToken);
 
   // Redirect logic
-  if (isAuthenticated && restrictedPathsForLoggedIn.includes(request.nextUrl.pathname)) {
+  if (
+    isAuthenticated &&
+    restrictedPathsForLoggedIn.includes(request.nextUrl.pathname)
+  ) {
     // If the user is authenticated and tries to access restricted paths, redirect to dashboard
     return NextResponse.redirect(new URL(redirectToDashboard, request.url));
   }
 
-  if (!isAuthenticated && !restrictedPathsForLoggedIn.includes(request.nextUrl.pathname)) {
+  if (
+    !isAuthenticated &&
+    !restrictedPathsForLoggedIn.includes(request.nextUrl.pathname)
+  ) {
     // If the user is not authenticated and tries to access other paths, redirect to signin
     return NextResponse.redirect(new URL(redirectToSignin, request.url));
   }

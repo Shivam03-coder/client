@@ -1,21 +1,26 @@
 "use client";
 import * as React from "react";
 import { alpha } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import TableSortLabel from "@mui/material/TableSortLabel";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
-import Checkbox from "@mui/material/Checkbox";
+import {
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableSortLabel,
+  Toolbar,
+  Typography,
+  Paper,
+  Checkbox,
+  TextField,
+  Modal,
+  TablePagination,
+} from "@mui/material";
 import { visuallyHidden } from "@mui/utils";
 import { useGetEmployeesQuery } from "@/store/api";
+import { Button } from "@/components/ui/button";
 
 interface EmployeeData {
   _id: string;
@@ -23,8 +28,6 @@ interface EmployeeData {
   email: string;
   phonenumber: string;
   skill: string;
-  activehours: number;
-  grade: string;
 }
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -87,28 +90,27 @@ function EnhancedTableHead(props: EnhancedTableHeadProps) {
       label: "Phone Number",
     },
     { id: "skill", numeric: false, disablePadding: false, label: "Skill" },
+    { id: "actions", numeric: false, disablePadding: false, label: "Actions" },
   ];
 
   return (
     <TableHead>
-      <TableRow>
+      <TableRow >
         <TableCell padding="checkbox">
           <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
-            inputProps={{
-              "aria-label": "select all employees",
-            }}
+            inputProps={{ "aria-label": "select all employees" }}
           />
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
+            className="bg-secondary"
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
             padding={headCell.disablePadding ? "none" : "normal"}
-            sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -133,12 +135,15 @@ function EnhancedTableHead(props: EnhancedTableHeadProps) {
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
+  onOpenCreateModal: () => void;
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected } = props;
+  const { numSelected, onOpenCreateModal } = props;
+
   return (
     <Toolbar
+      className="bg-secondary shadow-2xl"
       sx={[
         {
           pl: { sm: 2 },
@@ -172,6 +177,9 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           Employee List
         </Typography>
       )}
+      <Button className="text-secondary" onClick={onOpenCreateModal}>
+        Add Employee
+      </Button>
     </Toolbar>
   );
 }
@@ -182,23 +190,33 @@ export default function EmployeeTable() {
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [openModal, setOpenModal] = React.useState(false);
+  const [currentEmployee, setCurrentEmployee] =
+    React.useState<EmployeeData | null>(null);
+  const [employeeData, setEmployeeData] = React.useState<EmployeeData>({
+    _id: "",
+    firstname: "",
+    email: "",
+    phonenumber: "",
+    skill: "",
+  });
 
-  const { data: employeeData, isError } = useGetEmployeesQuery(null);
+  const { data: employees, isError } = useGetEmployeesQuery(null);
+  // const [createEmployee] = useCreateEmployeeMutation();
+  // const [updateEmployee] = useUpdateEmployeeMutation();
+  // const [deleteEmployee] = useDeleteEmployeeMutation();
 
   if (isError) {
     return <div>Some error occurred</div>;
   }
 
-  // Assuming employeeData is an array of employee objects
   const newMappedData: EmployeeData[] =
-    employeeData?.map((item) => ({
+    employees?.map((item: any) => ({
       _id: item._id,
       firstname: item.firstname,
       email: item.email,
       phonenumber: item.phonenumber,
       skill: item.skill,
-      activehours: item.activehours,
-      grade: item.grade,
     })) || [];
 
   const handleRequestSort = (
@@ -243,27 +261,69 @@ export default function EmployeeTable() {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
   const isSelected = (id: string) => selected.indexOf(id) !== -1;
 
+  const handleOpenModal = () => {
+    setCurrentEmployee(null);
+    setEmployeeData({
+      _id: "",
+      firstname: "",
+      email: "",
+      phonenumber: "",
+      skill: "",
+    });
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  // const handleSave = async () => {
+  //   if (currentEmployee) {
+  //     // Update employee
+  //     await updateEmployee({ id: currentEmployee._id, ...employeeData });
+  //   } else {
+  //     // Create employee
+  //     await createEmployee(employeeData);
+  //   }
+  //   handleCloseModal();
+  // };
+
+  const handleEdit = (employee: EmployeeData) => {
+    setCurrentEmployee(employee);
+    setEmployeeData(employee);
+    setOpenModal(true);
+  };
+
+  // const handleDelete = async (id: string) => {
+  //   await deleteEmployee(id);
+  // };
+
   const filteredEmployees = newMappedData.sort(getComparator(order, orderBy));
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      <EnhancedTableToolbar numSelected={selected.length} />
+      <EnhancedTableToolbar
+        numSelected={selected.length}
+        onOpenCreateModal={handleOpenModal}
+      />
       <TableContainer>
-        <Table stickyHeader aria-label="employee table">
+        <Table stickyHeader aria-label="sticky table">
           <EnhancedTableHead
             numSelected={selected.length}
             order={order}
             orderBy={orderBy}
-            onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
-            rowCount={newMappedData.length}
+            rowCount={filteredEmployees.length}
+            onSelectAllClick={handleSelectAllClick}
           />
           <TableBody>
             {filteredEmployees
@@ -302,6 +362,20 @@ export default function EmployeeTable() {
                     <TableCell>{row.email}</TableCell>
                     <TableCell>{row.phonenumber}</TableCell>
                     <TableCell>{row.skill}</TableCell>
+                    <TableCell className="space-x-3">
+                      <Button
+                        className="text-secondary px-5"
+                        onClick={() => handleEdit(row)}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        className="text-secondary"
+                        // onClick={() => handleDelete(row._id)}
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 );
               })}
@@ -317,6 +391,74 @@ export default function EmployeeTable() {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+
+      {/* Modal for creating/updating employee */}
+      <Modal
+       
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+      >
+        <Box  className="rounded-2xl" sx={{ ...style, width: 400 }}>
+          <Typography id="modal-title" variant="h6" component="h2">
+            {currentEmployee ? "Edit Employee" : "Add Employee"}
+          </Typography>
+          <TextField
+            label="First Name"
+            value={employeeData.firstname}
+            onChange={(e) =>
+              setEmployeeData({ ...employeeData, firstname: e.target.value })
+            }
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Email"
+            value={employeeData.email}
+            onChange={(e) =>
+              setEmployeeData({ ...employeeData, email: e.target.value })
+            }
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Phone Number"
+            value={employeeData.phonenumber}
+            onChange={(e) =>
+              setEmployeeData({ ...employeeData, phonenumber: e.target.value })
+            }
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Skill"
+            value={employeeData.skill}
+            onChange={(e) =>
+              setEmployeeData({ ...employeeData, skill: e.target.value })
+            }
+            fullWidth
+            margin="normal"
+          />
+          <Button
+            className="text-secondary"
+            // onClick={handleSave}
+          >
+            {currentEmployee ? "Update" : "Create"}
+          </Button>
+        </Box>
+      </Modal>
     </Paper>
   );
 }
+
+// Style for the modal
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+};

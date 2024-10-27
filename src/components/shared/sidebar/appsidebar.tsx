@@ -1,16 +1,16 @@
 "use client";
 import { sideBarLinksData } from "@/data";
 import { setisSidebarOpen } from "@/store/state/globalstate";
-import { useAppSelector } from "@/store/store";
+import { useAppDispatch, useAppSelector } from "@/store/store";
 import { CircleX, Lock } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
 import { useDispatch } from "react-redux";
 import SidebarLinks from "./sidebarLinks";
+import Link from "next/link";
 
 const AppSidebar = () => {
   const { isSidebarOpen } = useAppSelector((state) => state.global);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   return (
     <div
@@ -37,16 +37,16 @@ const AppSidebar = () => {
             ""
           )}
         </div>
-        <div className="flex items-center gap-5 border-y-[1.5px] border-secondary-100 px-8 py-3">
+        <Link href={"/"} className="flex items-center gap-5 border-y-[1.5px] border-secondary-100 px-8 py-3">
           <Image src="/applogo.png" alt="Logo-image" width={45} height={50} />
-          <div className="font-TitilliumWeb text-base font-medium">
-            <h3 className="font-medium">SYSTEM</h3>
+          <div className="font-poppins text-base font-medium">
+            <h3 className="font-inter text-xl font-bold">HRMS-TESLA</h3>
             <div className="mt-1 flex items-center gap-2">
               <Lock className="mt-1 size-4" />
               <p className="mt-2 text-sm font-medium opacity-85">Private</p>
             </div>
           </div>
-        </div>
+        </Link>
         {/* NAVBAR LINKS */}
         <nav className="z-10 w-full">
           {sideBarLinksData.map(({ href, icon, label }, i) => (

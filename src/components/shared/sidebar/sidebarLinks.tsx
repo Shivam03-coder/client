@@ -28,7 +28,7 @@ const SidebarLinks = ({ href, icon: Icon, label }: sidebarLinkspropTypes) => {
           <div className="absolute left-0 top-0 h-[100%] w-[3px] bg-blue-400" />
         )}
         <Icon className="size-6 text-primary-700 dark:text-tertiary-500" />
-        <h3 className="text-lg font-medium text-primary-700 opacity-70 dark:text-tertiary-500">
+        <h3 className="text-base font-medium text-primary-700 opacity-70 dark:text-tertiary-500">
           {label}
         </h3>
       </div>

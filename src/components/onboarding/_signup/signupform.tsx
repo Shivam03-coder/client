@@ -1,14 +1,26 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"; // Assuming you have a Select component
 import { useFormik } from "formik";
 import validate from "./validate"; // Assuming you have a validate function
 import React from "react";
-import { useSignupUserMutation } from "@/store/api/auth";
+import { useSignupUserMutation } from "@/store/api";
 import { useToast } from "@/hooks/use-toast";
 import { useAppDispatch } from "@/store/store";
 import { setUser } from "@/store/state/authstate";
 import { useRouter } from "next/navigation";
+import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { UserRound } from "lucide-react";
 
 const initialValues = {
   firstname: "",
@@ -16,6 +28,13 @@ const initialValues = {
   email: "",
   phonenumber: "",
   password: "",
+  profilePhoto: "",
+  gender: "",
+  skill: "",
+  shift: "",
+  activehours: "",
+  grade: "",
+  role: "",
 };
 
 const SignupForm: React.FC = () => {
@@ -30,24 +49,21 @@ const SignupForm: React.FC = () => {
     onSubmit: async (values, action) => {
       console.log("Form Data:", values);
       try {
-        const response = await SignupUser(values).unwrap();
-        console.log("🚀 ~ onSubmit: ~ response:", response)
-        if (response?.status === "Success" || response?.data) {
-          dispatch(setUser(response.data));
-
-          toast({
-            title: response?.message,
-          });
-
-          action.resetForm();
-
-          Router.push("/signin");
-        }
-        if (response?.status === "failed") {
-          toast({
-            title: response?.message,
-          });
-        }
+        // const response = await SignupUser(values).unwrap();
+        // console.log("🚀 ~ onSubmit: ~ response:", response);
+        // if (response?.status === "Success" || response?.data) {
+        //   dispatch(setUser(response.data));
+        //   toast({
+        //     title: response?.message,
+        //   });
+        //   action.resetForm();
+        //   Router.push("/signin");
+        // }
+        // if (response?.status === "failed") {
+        //   toast({
+        //     title: response?.message,
+        //   });
+        // }
       } catch (error) {
         console.error("Error during sign up:", error);
         toast({
@@ -60,111 +76,138 @@ const SignupForm: React.FC = () => {
   });
 
   return (
-    <form
-      onSubmit={formik.handleSubmit}
-      className="space-y-4 w-[50%] mx-auto shadow-2xl p-4"
-    >
-      <div>
-        <label htmlFor="firstname" className="block text-sm font-medium">
-          First Name
-        </label>
-        <Input
-          type="text"
-          id="firstname"
-          name="firstname"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.firstname}
-          placeholder="Enter your first name"
-          required
-        />
-        {formik.touched.firstname && formik.errors.firstname ? (
-          <div className="text-red-500 text-sm">{formik.errors.firstname}</div>
-        ) : null}
-      </div>
-
-      <div>
-        <label htmlFor="lastname" className="block text-sm font-medium">
-          Last Name
-        </label>
-        <Input
-          type="text"
-          id="lastname"
-          name="lastname"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.lastname}
-          placeholder="Enter your last name"
-          required
-        />
-        {formik.touched.lastname && formik.errors.lastname ? (
-          <div className="text-red-500 text-sm">{formik.errors.lastname}</div>
-        ) : null}
-      </div>
-
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium">
-          Email
-        </label>
-        <Input
-          type="email"
-          id="email"
-          name="email"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.email}
-          placeholder="Enter your email"
-          required
-        />
-        {formik.touched.email && formik.errors.email ? (
-          <div className="text-red-500 text-sm">{formik.errors.email}</div>
-        ) : null}
-      </div>
-
-      <div>
-        <label htmlFor="phonenumber" className="block text-sm font-medium">
-          Phone Number
-        </label>
-        <Input
-          type="tel"
-          id="phonenumber"
-          name="phonenumber"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.phonenumber}
-          placeholder="Enter your phone number"
-          required
-        />
-        {formik.touched.phonenumber && formik.errors.phonenumber ? (
-          <div className="text-red-500 text-sm">
-            {formik.errors.phonenumber}
+    <Card className="space-y-4 w-[50%] mx-auto shadow-2xl p-4">
+      <form onSubmit={formik.handleSubmit} className="space-y-4">
+        <div className="flex flex-col items-start justify-start gap-1">
+          <div className="flex h-[3.375rem] w-full items-center justify-between self-stretch rounded-lg border border-[#00172f] bg-white px-3 py-2.5">
+            <div className="flex items-center gap-2 md:gap-5">
+              <UserRound className="h-6 w-6 text-primary" />
+              <input
+                type="email"
+                placeholder="Enter Your Email or Username"
+                className="bg-transparent font-inter text-lg placeholder:text-[1rem] font-normal text-primary outline-none"
+              />
+            </div>
           </div>
-        ) : null}
-      </div>
-
-      <div>
-        <label htmlFor="password" className="block text-sm font-medium">
-          Password
-        </label>
-        <Input
-          type="password"
-          id="password"
-          name="password"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.password}
-          placeholder="Enter your password"
-          required
-        />
-        {formik.touched.password && formik.errors.password ? (
-          <div className="text-red-500 text-sm">{formik.errors.password}</div>
-        ) : null}
-      </div>
-
-      <Button type="submit" className="w-full mt-4">
-        Sign Up
-      </Button>
-    </form>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="flex flex-col items-start justify-start gap-1">
+            <div className="flex h-[3.375rem] w-full items-center justify-between self-stretch rounded-lg border border-[#00172f] bg-white px-3 py-2.5">
+              <div className="flex items-center gap-2 md:gap-5">
+                <UserRound className="h-6 w-6 text-primary" />
+                <input
+                  type="email"
+                  placeholder="Enter Your First Name"
+                  className="bg-transparent font-inter text-lg placeholder:text-[1rem] font-normal text-primary outline-none"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col items-start justify-start gap-1">
+            <div className="flex h-[3.375rem] w-full items-center justify-between self-stretch rounded-lg border border-[#00172f] bg-white px-3 py-2.5">
+              <div className="flex items-center gap-2 md:gap-5">
+                <UserRound className="h-6 w-6 text-primary" />
+                <input
+                  type="email"
+                  placeholder="Enter Your Last Name"
+                  className="bg-transparent font-inter text-lg placeholder:text-[1rem] font-normal text-primary outline-none"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="flex flex-col items-start justify-start gap-1">
+            <div className="flex h-[3.375rem] w-full items-center justify-between self-stretch rounded-lg border border-[#00172f] bg-white px-3 py-2.5">
+              <div className="flex items-center gap-2 md:gap-5">
+                <UserRound className="h-6 w-6 text-primary" />
+                <input
+                  type="number"
+                  placeholder="Enter Your Phone number"
+                  className="bg-transparent font-inter text-lg placeholder:text-[1rem] font-normal text-primary outline-none"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col items-start justify-start gap-1">
+            <div className="flex h-[3.375rem] w-full items-center justify-between self-stretch rounded-lg border border-[#00172f] bg-white px-3 py-2.5">
+              <div className="flex items-center gap-2 md:gap-5">
+                <UserRound className="h-6 w-6 text-primary" />
+                <input
+                  type="password"
+                  placeholder="Enter Your PassWord"
+                  className="bg-transparent font-inter text-lg placeholder:text-[1rem] font-normal text-primary outline-none"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="flex flex-col items-start justify-start gap-1">
+            <Select >
+              <SelectTrigger className="p-4">
+                <SelectValue placeholder="Select a fruit" />
+              </SelectTrigger>
+              <SelectContent className="bg-secondary p-4">
+                <SelectGroup>
+                  <SelectLabel className="p-4">GENDER</SelectLabel>
+                  <SelectItem className="p-4" value="apple">
+                    M
+                  </SelectItem>
+                  <SelectItem className="p-4" value="banana">
+                    F
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex flex-col items-start justify-start gap-1">
+            <div className="flex h-[3.375rem] w-full items-center justify-between self-stretch rounded-lg border border-[#00172f] bg-white px-3 py-2.5">
+              <div className="flex items-center gap-2 md:gap-5">
+                <UserRound className="h-6 w-6 text-primary" />
+                <input
+                  type="password"
+                  placeholder="Enter Your PassWord"
+                  className="bg-transparent font-inter text-lg placeholder:text-[1rem] font-normal text-primary outline-none"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="flex flex-col items-start justify-start gap-1">
+            <div className="flex h-[3.375rem] w-full items-center justify-between self-stretch rounded-lg border border-[#00172f] bg-white px-3 py-2.5">
+              <div className="flex items-center gap-2 md:gap-5">
+                <UserRound className="h-6 w-6 text-primary" />
+                <input
+                  type="number"
+                  placeholder="Enter Your Phone number"
+                  className="bg-transparent font-inter text-lg placeholder:text-[1rem] font-normal text-primary outline-none"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col items-start justify-start gap-1">
+            <div className="flex h-[3.375rem] w-full items-center justify-between self-stretch rounded-lg border border-[#00172f] bg-white px-3 py-2.5">
+              <div className="flex items-center gap-2 md:gap-5">
+                <UserRound className="h-6 w-6 text-primary" />
+                <input
+                  type="password"
+                  placeholder="Enter Your PassWord"
+                  className="bg-transparent font-inter text-lg placeholder:text-[1rem] font-normal text-primary outline-none"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <Button
+          type="submit"
+          className="w-full mt-4 text-secondary text-2xl py-6"
+        >
+          SIGN UP
+        </Button>
+      </form>
+    </Card>
   );
 };
 

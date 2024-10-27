@@ -1,89 +1,75 @@
 import {
-  AudioWaveform,
-  BadgeCheck,
-  Bell,
-  BookOpen,
-  Bot,
-  ChevronRight,
-  ChevronsUpDown,
-  Command,
-  CreditCard,
-  Folder,
-  Forward,
-  Frame,
-  GalleryVerticalEnd,
   Home,
   Hourglass,
-  LogOut,
-  Map,
-  MoreHorizontal,
-  PieChart,
-  Plus,
   Search,
-  Settings2,
-  Sparkles,
-  SquareTerminal,
-  Trash2,
+  TimerIcon,
   UserRound,
   UsersRound,
-} from "lucide-react"
+} from "lucide-react";
 
-import { CarouselimageDataType, sideBarLinkDataTypes } from "@/types";
+import { CarouselimageDataType, sideBarLinkDataTypes, UserData } from "@/types";
 
-export const carouselIamgeData: Array<CarouselimageDataType> = [
+export const carouselImageData: Array<CarouselimageDataType> = [
   {
     id: 0,
     img: "/g3.png",
-    heading: "Elevate Your Projects to New Heights",
+    heading: "Streamline Your Coffee Shop Operations",
     descr:
-      "Meet your new productivity powerhouse. Our tool is designed to be your go-to partner in achieving maximum efficiency and project success.",
+      "Our HRMS is designed to optimize your coffee shop's workforce management, making scheduling and employee management a breeze.",
   },
   {
     id: 1,
     img: "/g2.png",
-    heading: "Effortless Collaboration, Seamless Success",
+    heading: "Empower Your Team with Efficient Scheduling",
     descr:
-      "Discover a new level of project management excellence. Our tool helps you streamline processes, ensuring your projects soar above the rest.",
+      "Easily create and manage employee shifts, ensuring that your coffee shop runs smoothly while keeping your staff happy and engaged.",
   },
   {
     id: 2,
     img: "/g1.png",
-    heading: "From Planning to Perfection",
+    heading: "Enhance Employee Experience",
     descr:
-      "Discover a new level of project management excellence. Our tool helps you streamline processes, ensuring your projects soar above the rest.",
+      "With our HRMS, prioritize employee well-being by considering personal constraints and labor laws, fostering a supportive workplace.",
   },
   {
     id: 3,
     img: "/g4.png",
-    heading: "Manage Smarter, Deliver Faster",
+    heading: "Achieve Operational Excellence",
     descr:
-      "Revolutionise your project management. Smart features and intuitive design help you manage projects more effectively and deliver results in record time.",
+      "Transform your coffee shop management with data-driven insights and automation, allowing you to focus on serving your customers.",
   },
 ];
+
 export const sideBarLinksData: Array<sideBarLinkDataTypes> = [
   {
-    href: "/home",
+    href: "/admin-dashboard",
     icon: Home,
     label: "Home",
   },
   {
-    href: "/timeline",
-    icon: Hourglass,
-    label: "Timeline",
-  },
-  {
-    href: "/search",
-    icon: Search,
-    label: "Search",
-  },
-  {
-    href: "/users",
-    icon: UserRound,
-    label: "User",
-  },
-  {
-    href: "/teams",
+    href: "/admin-dashboard/employee-management",
     icon: UsersRound,
-    label: "Teams",
+    label: "User-Manage",
+  },
+  {
+    href: "/admin-dashboard/scheduling",
+    icon: TimerIcon,
+    label: "Scheduling",
   },
 ];
+
+export const sampleUserData: UserData[] = Array.from(
+  { length: 40 },
+  (_, i) => ({
+    id: i + 1,
+    name: `User ${i + 1}`,
+    outletLocation: `Outlet ${(i % 3) + 1}`,
+    shiftNow: `Shift ${i % 2 === 0 ? "Morning" : "Evening"}`,
+    mobileNumber: `+91-90000${i + 1000}`,
+    mail: `user${i + 1}@example.com`,
+    leaveDate: `2024-11-${String((i % 28) + 1).padStart(2, "0")}`,
+    workingHours: `${(i % 8) + 1} hours`,
+    read: i % 2 === 0,
+    write: i % 3 === 0,
+  })
+);
